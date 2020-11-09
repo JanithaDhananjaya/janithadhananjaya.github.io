@@ -850,6 +850,45 @@ footer p:nth-child(1) {
     font-weight: 600;
 }
 
+
+
+
+.aside .logo a::before {
+    border-top:4px solid #ffb400;
+    border-left:4px solid #ffb400;
+}
+
+.aside .logo a::after {
+    border-right:4px solid #ffb400;
+    border-bottom:4px solid #ffb400;
+}
+
+.blog .blog-item-inner .blog-info .blog-tag a,
+.contact .contact-info-item .icon .fa,
+.service .services-item .service-item-inner .icon .fa,
+.about .about-content .about-text h3 span,
+.aside .nav li a:hover,
+.aside .nav li a.active
+{
+    color: #ffb400;
+}
+
+.service .services-item .service-item-inner:hover .icon,
+.social-icons a,
+.about .about-content .timeline .circle-dot,
+.about .about-content .timeline .timeline-item::before,
+.about .about-content .skills .skill-item .progress .progress-in,
+.btn,
+.section-title h2::before,
+.section-title h2::after,
+.aside .nav-toggle span,
+.aside .nav-toggle span::before,
+.aside .nav-toggle span::after,
+.home .intro .social-links a{
+    background-color: #ffb400;
+}
+
+
 /*Responsive*/
 
 @media (max-width: 1199px) {
