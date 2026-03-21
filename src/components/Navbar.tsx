@@ -28,9 +28,6 @@ export function Navbar() {
           <a href="#about" className="hover:text-accent transition-colors">
             About
           </a>
-          <a href="#metrics" className="hover:text-accent transition-colors">
-            Impact
-          </a>
           <a href="#projects" className="hover:text-accent transition-colors">
             Projects
           </a>
