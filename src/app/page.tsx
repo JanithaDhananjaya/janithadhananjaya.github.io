@@ -1,5 +1,6 @@
 import { Hero } from "@/components/Hero";
 import { Projects } from "@/components/Projects";
+import { OtherProjects } from "@/components/OtherProjects";
 import { Skills } from "@/components/Skills";
 import { Navbar } from "@/components/Navbar";
 
@@ -12,7 +13,10 @@ export default function Home() {
       
       <main className="max-w-5xl mx-auto px-6 sm:px-8 md:px-12 relative z-10 pt-16">
         <div id="about"><Hero /></div>
-        <div id="projects"><Projects /></div>
+        <div id="projects">
+          <Projects />
+          <OtherProjects />
+        </div>
         <div id="skills"><Skills /></div>
       </main>
 
