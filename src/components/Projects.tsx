@@ -1,143 +1,198 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Target } from "lucide-react";
+import { FileText, ArrowUpRight } from "lucide-react";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { allProjects } from "@/constants/portfolio";
+import { ProjectModal, type Project } from "./ProjectModal";
 
-const projects = [
-  {
-    id: "eZPharmacy",
-    title: "eZPharmacy",
-    subtitle: "Digital Healthcare Ecosystem",
-    description: "Refactoring and securing a centralized healthcare portal for the Singapore market.",
-    challenge: "Building a high-performance, secure bridge between patients, doctors, and pharmacies while adhering to Singapore’s stringent national security standards.",
-    execution: [
-      { label: "Architecture", text: "Modernized the frontend using Next.js App Router and Server Components to improve First Contentful Paint (FCP)." },
-      { label: "Identity & Security", text: "Integrated Singpass (Singapore’s National Digital Identity) for robust user verification and managed secure sessions via NextAuth." },
-      { label: "Data Strategy", text: "Implemented GraphQL with Apollo Client to eliminate over-fetching, ensuring efficient state management across complex prescription workflows." },
-    ],
-    keyResult: "Delivered a seamless, enterprise-grade UI that supports end-to-end digital prescription fulfillment for a nationwide user base.",
-    tech: ["#NextJS", "#GraphQL", "#Singpass", "#NextAuth", "#TailwindCSS"],
-    link: "https://github.com",
-  },
-  {
-    id: "eZTracker",
-    title: "eZTracker",
-    subtitle: "Enterprise Supply Chain Intelligence",
-    description: "Architecting a real-time inventory and logistics tracking system.",
-    challenge: "Managing complex supply chain workflows—including Receiving, Dispatching, and Decommissioning—across multiple global warehouse locations with 100% accuracy.",
-    execution: [
-      { label: "Real-time Interaction", text: "Developed a high-speed barcode scanning interface using Next.js for instant item verification at the frontend level." },
-      { label: "Access Control", text: "Implemented complex backend workflows and Role-Based Access Control (RBAC) using Okta to ensure data integrity." },
-      { label: "Optimization", text: "Streamlined asynchronous operations for critical logistics processes, significantly reducing system idle time during high-volume transfers." },
-    ],
-    keyResult: "Standardized warehouse operations into a modular, reusable system that minimized manual entry errors and improved overall supply chain visibility.",
-    tech: ["#React", "#NextJS", "#Express", "#Okta", "#MongoDB"],
-    link: "https://github.com",
-  },
-  {
-    id: "MarketPlace",
-    title: "MarketPlace (Ideamart)",
-    subtitle: "High-Scale Microservices",
-    description: "Optimizing a centralized enterprise solution platform for high-concurrency environments.",
-    challenge: "Reducing backend latency and hardening security for a platform handling sensitive employee and campaign management data for large enterprises.",
-    execution: [
-      { label: "Microservices", text: "Engineered scalable services using Java and Spring Boot, leading to a documented 30% boost in overall system performance." },
-      { label: "Performance Tuning", text: "Optimized PostgreSQL queries and implemented Redis caching strategies to slash response times for critical report services." },
-      { label: "Security Posture", text: "Remediated vulnerabilities identified in third-party penetration tests, reducing security risks by 50% through robust Spring Boot security protocols." },
-    ],
-    keyResult: "Successfully launched new enterprise features that drove a 20% increase in user engagement and maintained a 100% security validation record.",
-    tech: ["#Java", "#SpringBoot", "#Redis", "#PostgreSQL", "#Docker"],
-    link: "https://github.com",
-  },
-];
+function toFilename(id: string): string {
+  return (
+    id
+      .replace(/([A-Z])/g, (m) => "-" + m.toLowerCase())
+      .replace(/^-/, "")
+      .replace(/([a-z])([A-Z])/g, "$1-$2")
+      .toLowerCase() + ".md"
+  );
+}
+
+// Determine the featured project (most recent = eZTracker)
+const FEATURED_ID = "eZTracker";
 
 export function Projects() {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const isMobile = useIsMobile();
+
+  // Put featured first
+  const sorted = [
+    ...allProjects.filter((p) => p.id === FEATURED_ID),
+    ...allProjects.filter((p) => p.id !== FEATURED_ID),
+  ];
+
   return (
-    <section className="py-24 border-t border-slate-200 dark:border-slate-800">
-      <div className="mb-20">
-        <h2 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">Featured Projects</h2>
-        <p className="text-slate-500 dark:text-slate-400 mt-3 text-lg">In-depth technical breakdowns of enterprise-scale systems.</p>
+    <section id="projects" style={{ padding: isMobile ? "64px 0" : "96px 0" }}>
+      {/* Eyebrow */}
+      <div className="eyebrow">
+        <span className="eyebrow-num">03</span>
+        <span className="eyebrow-line" />
+        <span>work · ls ~/projects</span>
       </div>
 
-      <div className="space-y-32">
-        {projects.map((project, index) => (
-          <motion.div
-            key={project.id}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7, delay: index * 0.1, ease: "easeOut" }}
-            className="flex flex-col gap-10"
-          >
-            {/* Header section */}
-            <div className="space-y-6 border-b border-slate-200 dark:border-slate-800 pb-8">
-              <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
-                <div>
-                  <h3 className="text-3xl font-extrabold text-slate-900 dark:text-white flex flex-col md:flex-row md:items-center gap-2 md:gap-4 leading-tight">
-                    {project.title}
-                    <span className="hidden md:inline text-xl font-light text-slate-300 dark:text-slate-700">|</span>
-                    <span className="text-xl md:text-2xl font-medium text-slate-500 dark:text-slate-400">{project.subtitle}</span>
-                  </h3>
-                  <p className="mt-4 text-xl text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
-                    {project.description}
-                  </p>
+      {/* Title */}
+      <h2 className="section-title">
+        Enterprise platforms,{" "}
+        <span className="serif-italic">quietly</span>{" "}
+        in production.
+      </h2>
+
+      {/* Grid */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
+          gap: "16px",
+          marginTop: "48px",
+        }}
+      >
+        {sorted.map((project, idx) => {
+          const isFeatured = project.id === FEATURED_ID;
+          const filename = toFilename(project.id);
+
+          return (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: (idx % 4) * 0.08, ease: "easeOut" }}
+              onClick={() => setSelectedProject(project as Project)}
+              style={{
+                gridColumn: isFeatured && !isMobile ? "span 2" : "span 1",
+                background: "var(--surface)",
+                border: "1px solid var(--border)",
+                borderRadius: "14px",
+                padding: "28px",
+                cursor: "pointer",
+                transition:
+                  "transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
+                (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-md)";
+                (e.currentTarget as HTMLElement).style.borderColor = "var(--border-2)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+              }}
+            >
+              {/* Card header */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginBottom: "16px",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    fontFamily: "var(--mono)",
+                    fontSize: "12px",
+                    color: "var(--ink-4)",
+                  }}
+                >
+                  <FileText size={13} style={{ color: "var(--ink-4)" }} />
+                  <span>~/projects/</span>
+                  <span style={{ color: "var(--ink-2)" }}>{filename}</span>
                 </div>
+                <ArrowUpRight
+                  size={16}
+                  style={{
+                    color: "var(--ink-4)",
+                    transition: "color 0.15s ease",
+                  }}
+                  className="arrow-icon"
+                />
               </div>
-              
-              <div className="flex flex-wrap gap-3 pt-2">
-                {project.tech.map(t => (
-                  <span key={t} className="text-sm font-semibold tracking-wider text-accent bg-accent/5 px-3 py-1.5 rounded-md text-nowrap">
+
+              {/* Meta */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  fontSize: "12px",
+                  marginBottom: "10px",
+                  color: "var(--ink-4)",
+                }}
+              >
+                <span style={{ color: "var(--accent)", fontWeight: 500 }}>
+                  {project.subtitle}
+                </span>
+              </div>
+
+              {/* Title */}
+              <h3
+                style={{
+                  fontFamily: "var(--mono)",
+                  fontSize: isFeatured ? "28px" : "22px",
+                  fontWeight: 500,
+                  letterSpacing: "-0.025em",
+                  color: "var(--ink)",
+                  marginBottom: "10px",
+                  lineHeight: 1.1,
+                }}
+              >
+                {project.title}
+              </h3>
+
+              {/* Description */}
+              <p
+                style={{
+                  fontSize: "13.5px",
+                  color: "var(--ink-3)",
+                  lineHeight: 1.65,
+                  marginBottom: "18px",
+                }}
+              >
+                {project.description}
+              </p>
+
+              {/* Tech tags */}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                {project.tech.slice(0, 6).map((t) => (
+                  <span key={t} className="tag">
                     {t}
                   </span>
                 ))}
+                {project.tech.length > 6 && (
+                  <span
+                    style={{
+                      padding: "3px 9px",
+                      fontFamily: "var(--mono)",
+                      fontSize: "11.5px",
+                      color: "var(--ink-4)",
+                    }}
+                  >
+                    +{project.tech.length - 6} more
+                  </span>
+                )}
               </div>
-            </div>
-
-            {/* Content section */}
-            <div className="grid md:grid-cols-12 gap-12 lg:gap-16">
-              {/* Challenge Column */}
-              <div className="md:col-span-4 space-y-4">
-                <h4 className="text-sm font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 flex items-center gap-2">
-                  <Target className="w-4 h-4" /> The Challenge
-                </h4>
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed font-medium text-lg">
-                  {project.challenge}
-                </p>
-              </div>
-
-              {/* Technical Execution Column */}
-              <div className="md:col-span-8 flex flex-col justify-center space-y-8">
-                <h4 className="text-sm font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-2">
-                  Technical Execution
-                </h4>
-                <ul className="space-y-6">
-                  {project.execution.map(exe => (
-                    <li key={exe.label} className="flex gap-5">
-                      <div className="w-2 h-2 rounded-full bg-accent mt-2.5 flex-shrink-0 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
-                      <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                        <span className="font-semibold text-slate-900 dark:text-white">{exe.label}:</span> {exe.text}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* Key Result Banner */}
-            <div className="p-8 md:p-10 mt-6 bg-slate-50/80 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 rounded-[2rem] flex flex-col sm:flex-row items-start sm:items-center gap-6 shadow-sm hover:shadow-md hover:border-accent/30 transition-all duration-300">
-              <div className="w-14 h-14 rounded-2xl bg-white dark:bg-slate-950 shadow-sm flex items-center justify-center flex-shrink-0 border border-slate-100 dark:border-slate-800 text-3xl">
-                🚀
-              </div>
-              <div className="flex-1">
-                <h4 className="text-xs font-bold uppercase tracking-widest text-accent mb-3">Key Result</h4>
-                <p className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white leading-snug">
-                  {project.keyResult}
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          );
+        })}
       </div>
+
+      <ProjectModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
     </section>
   );
 }
