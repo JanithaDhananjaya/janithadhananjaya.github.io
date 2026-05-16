@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { availabilityLong } from "@/lib/availability";
 
 export const dynamic = "force-static";
 export const size = { width: 1200, height: 630 };
@@ -140,7 +141,7 @@ export default function Image() {
             }}
           >
             <span style={{ color: "#F97316" }}>✓</span>
-            <span>open to lead &amp; staff roles · May 2026</span>
+            <span>open to lead &amp; staff roles · {availabilityLong()}</span>
           </div>
           <div style={{ fontSize: "14px", color: "#6B6353" }}>
             janithadhananjaya.github.io

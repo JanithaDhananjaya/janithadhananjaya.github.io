@@ -44,9 +44,11 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
       if (e.key === "Escape") onClose();
     };
     document.body.style.overflow = "hidden";
+    window.dispatchEvent(new Event("lenis:stop"));
     window.addEventListener("keydown", handleKey);
     return () => {
       document.body.style.overflow = "";
+      window.dispatchEvent(new Event("lenis:start"));
       window.removeEventListener("keydown", handleKey);
     };
   }, [project, onClose]);
@@ -80,8 +82,8 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             style={{
               position: "fixed",
               left: "50%",
+              x: "-50%",
               top: isMobile ? "4vh" : "7vh",
-              transform: "translateX(-50%)",
               width: isMobile ? "calc(100% - 32px)" : "calc(100% - 48px)",
               maxWidth: "720px",
               maxHeight: isMobile ? "92vh" : "86vh",
@@ -137,13 +139,18 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               <span
                 style={{
                   flex: 1,
+                  minWidth: 0,
                   textAlign: "center",
                   fontFamily: "var(--mono)",
                   fontSize: "12px",
                   color: "var(--ink-3)",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  padding: "0 8px",
                 }}
               >
-                <span style={{ color: "var(--ink-4)" }}>~/projects/</span>
+                {!isMobile && <span style={{ color: "var(--ink-4)" }}>~/projects/</span>}
                 {toFilename(project.id)}
               </span>
               <button
@@ -180,10 +187,11 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               style={{
                 flex: 1,
                 overflowY: "auto",
-                padding: isMobile ? "20px 20px" : "28px 32px",
+                overflowX: "hidden",
+                padding: isMobile ? "20px 16px" : "28px 32px",
                 display: "flex",
                 flexDirection: "column",
-                gap: "28px",
+                gap: isMobile ? "20px" : "28px",
               }}
             >
               {/* Meta + title */}
@@ -207,11 +215,11 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                 <h2
                   style={{
                     fontFamily: "var(--mono)",
-                    fontSize: "28px",
+                    fontSize: isMobile ? "20px" : "28px",
                     fontWeight: 500,
                     letterSpacing: "-0.03em",
                     color: "var(--ink)",
-                    lineHeight: 1.1,
+                    lineHeight: 1.2,
                   }}
                 >
                   {project.title}
@@ -258,7 +266,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                         style={{
                           display: "flex",
                           gap: "10px",
-                          fontSize: "13.5px",
+                          fontSize: isMobile ? "13px" : "13.5px",
                           color: "var(--ink-3)",
                           lineHeight: 1.6,
                         }}
@@ -288,11 +296,11 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               {project.keyResult && (
                 <div
                   style={{
-                    padding: "16px 20px",
+                    padding: isMobile ? "14px 16px" : "16px 20px",
                     borderRadius: "8px",
                     background: "var(--accent-soft)",
                     border: "1px solid var(--accent-soft-2)",
-                    fontSize: "13.5px",
+                    fontSize: isMobile ? "13px" : "13.5px",
                     color: "var(--ink-2)",
                     lineHeight: 1.65,
                   }}
