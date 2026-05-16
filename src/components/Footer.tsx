@@ -1,6 +1,9 @@
 "use client";
 
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { availabilityShort } from "@/lib/availability";
+
+const AVAIL = availabilityShort();
 
 const asciiLines: Array<Array<{ text: string; accent?: boolean; bold?: boolean }>> = [
   [{ text: "╭──────────────────────────────────────────────╮" }],
@@ -23,7 +26,7 @@ const asciiLines: Array<Array<{ text: string; accent?: boolean; bold?: boolean }
   [
     { text: "│   " },
     { text: "[✓]", accent: true },
-    { text: " available may 2026                     │" },
+    { text: ` available ${AVAIL}                     │` },
   ],
   [
     { text: "│   " },
@@ -174,7 +177,7 @@ export function Footer() {
             }}
           >
             <span className="status-dot" />
-            available may 2026
+            available {AVAIL}
           </span>
         </div>
       </div>

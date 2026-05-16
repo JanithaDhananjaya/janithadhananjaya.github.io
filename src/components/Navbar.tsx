@@ -140,8 +140,31 @@ export function Navbar() {
 
         {/* Right controls */}
         <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
-          {/* Command palette trigger — desktop only */}
-          {!isMobile && (
+          {/* Command palette trigger */}
+          {isMobile ? (
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent("open-cmd"))}
+              aria-label="Search"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "32px",
+                height: "32px",
+                border: "1px solid var(--border)",
+                background: "var(--surface)",
+                borderRadius: "8px",
+                cursor: "pointer",
+                color: "var(--ink-3)",
+                flexShrink: 0,
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+                <circle cx="5.5" cy="5.5" r="4" stroke="currentColor" strokeWidth="1.3" />
+                <line x1="8.7" y1="8.7" x2="12" y2="12" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+              </svg>
+            </button>
+          ) : (
             <button
               onClick={() => window.dispatchEvent(new CustomEvent("open-cmd"))}
               style={{

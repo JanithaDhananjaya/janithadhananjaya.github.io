@@ -16,6 +16,11 @@ export const SmoothScroll = ({ children }: { children: ReactNode }) => {
       infinite: false,
     });
 
+    const stop = () => lenis.stop();
+    const start = () => lenis.start();
+    window.addEventListener("lenis:stop", stop);
+    window.addEventListener("lenis:start", start);
+
     function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -25,6 +30,8 @@ export const SmoothScroll = ({ children }: { children: ReactNode }) => {
 
     return () => {
       lenis.destroy();
+      window.removeEventListener("lenis:stop", stop);
+      window.removeEventListener("lenis:start", start);
     };
   }, []);
 

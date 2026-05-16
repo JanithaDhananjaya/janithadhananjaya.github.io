@@ -8,6 +8,8 @@ import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
 import { CommandPalette } from "@/components/CommandPalette";
 import { ScrollSpy } from "@/components/ScrollSpy";
+import { GitHubStats } from "@/components/GitHubStats";
+import { QuoteBar } from "@/components/QuoteBar";
 
 export default function Home() {
   return (
@@ -23,6 +25,7 @@ export default function Home() {
         }}
       >
         <Hero />
+        <GitHubStats />
 
         <div style={{ borderTop: "1px dashed var(--border)" }} id="experience">
           <Experience />
@@ -39,6 +42,8 @@ export default function Home() {
         <div style={{ borderTop: "1px dashed var(--border)" }} id="education">
           <Education />
         </div>
+
+        <QuoteBar />
 
         <div style={{ borderTop: "1px dashed var(--border)" }} id="contact">
           <Contact />

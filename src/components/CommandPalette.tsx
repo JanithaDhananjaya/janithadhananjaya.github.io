@@ -2,6 +2,10 @@
 
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useTheme } from "./ThemeProvider";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { availabilityLong } from "@/lib/availability";
+
+const AVAIL = availabilityLong();
 
 interface CommandItem {
   id: string;
@@ -19,7 +23,7 @@ const HIRE_LINES: Array<{ text: string; color?: string; indent?: boolean; delay:
   { text: "[✓] 7+ years enterprise experience", color: "var(--accent)", indent: true, delay: 900 },
   { text: "[✓] Java · Spring Boot · Next.js · React", color: "var(--accent)", indent: true, delay: 1150 },
   { text: "[✓] Pharma · Telecom · Government cleared", color: "var(--accent)", indent: true, delay: 1400 },
-  { text: "[✓] Available May 2026 · Sri Lanka / Remote", color: "var(--accent)", indent: true, delay: 1650 },
+  { text: `[✓] Available ${AVAIL} · Sri Lanka / Remote`, color: "var(--accent)", indent: true, delay: 1650 },
   { text: "", delay: 1900 },
   { text: "Permission granted.", color: "var(--ink)", delay: 2000 },
   { text: "Hiring janitha.silva...", color: "var(--ink)", delay: 2300 },
@@ -106,7 +110,7 @@ const WHOAMI_LINES: Array<{ text: string; color?: string; dim?: boolean; delay: 
   { text: "uptime:    7+ years", color: "var(--ink)", delay: 860 },
   { text: "location:  Battaramulla, LK · remote-ready", color: "var(--ink)", delay: 1040 },
   { text: "stack:     Java · Spring Boot · React · Next.js", color: "var(--ink)", delay: 1220 },
-  { text: "status:    ● available May 2026", color: "var(--accent)", delay: 1400 },
+  { text: `status:    ● available ${AVAIL}`, color: "var(--accent)", delay: 1400 },
   { text: "", delay: 1700 },
   { text: "$ git log --author=\"janitha\" --oneline", color: "var(--ink-3)", delay: 1900 },
   { text: "", delay: 2150 },
@@ -222,6 +226,7 @@ export function CommandPalette() {
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const { toggle: toggleTheme } = useTheme();
+  const isMobile = useIsMobile();
 
   const showToast = useCallback((msg: string) => {
     setToastMsg(msg);
@@ -442,7 +447,8 @@ export function CommandPalette() {
           zIndex: 1001,
           display: "flex",
           justifyContent: "center",
-          paddingTop: "14vh",
+          paddingTop: isMobile ? "8vh" : "14vh",
+          padding: isMobile ? "8vh 16px 0" : "14vh 24px 0",
           pointerEvents: "none",
         }}
       >

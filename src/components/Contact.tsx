@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Github, Linkedin, MapPin, Instagram, Facebook } from "lucide-react";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { availabilityLong } from "@/lib/availability";
 
 export function Contact() {
   const isMobile = useIsMobile();
@@ -38,7 +39,7 @@ export function Contact() {
           }}
         >
           <span className="status-dot" />
-          available for lead &amp; staff roles · May 2026 onwards
+          available for lead &amp; staff roles · {availabilityLong()} onwards
         </div>
 
         {/* Big title */}

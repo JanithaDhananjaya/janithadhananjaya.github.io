@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { CustomCursor } from "@/components/CustomCursor";
 import { InitialLoader } from "@/components/InitialLoader";
+import { SpotifyWidget } from "@/components/SpotifyWidget";
 import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -91,6 +92,7 @@ export default function RootLayout({
           <CustomCursor />
           <ScrollProgress />
           <SmoothScroll>{children}</SmoothScroll>
+          <SpotifyWidget />
         </ThemeProvider>
       </body>
     </html>
