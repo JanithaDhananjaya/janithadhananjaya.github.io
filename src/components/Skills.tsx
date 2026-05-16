@@ -1,58 +1,227 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Code2, Database } from "lucide-react";
+import { Server, Code2, Cloud, Database } from "lucide-react";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
-const skillCategories = [
+const categories = [
   {
-    title: "Frontend Development",
-    icon: Code2,
-    skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Vue.js", "Redux", "GraphQL"],
+    name: "Backend",
+    Icon: Server,
+    items: [
+      { name: "Java", primary: true },
+      { name: "Spring Boot", primary: true },
+      { name: "Node.js", primary: true },
+      { name: "Express", primary: true },
+      { name: "REST APIs", primary: true },
+      { name: "Microservices", primary: true },
+      { name: "Hibernate", primary: true },
+      { name: "Prisma", primary: true },
+      { name: "GraphQL", primary: false },
+      { name: "RabbitMQ", primary: false },
+      { name: "Sequelize", primary: false },
+      { name: "PHP", primary: false },
+      { name: "Pyhton", primary: false },
+      { name: "Django", primary: false },
+      { name: "Next js", primary: false },
+    ],
   },
   {
-    title: "Backend Development",
-    icon: Database,
-    skills: ["Node.js", "Express", "PostgreSQL", "MongoDB", "Redis", "REST APIs", "Docker", "Kubernetes"],
+    name: "Frontend",
+    Icon: Code2,
+    items: [
+      { name: "React", primary: true },
+      { name: "Next.js", primary: true },
+      { name: "TypeScript", primary: true },
+      { name: "Redux Toolkit", primary: true },
+      { name: "Tailwind CSS", primary: true },
+      { name: "Ant Design", primary: true },
+      { name: "Storybook", primary: true },
+      { name: "Angular", primary: false },
+    ],
+  },
+  {
+    name: "Cloud & DevOps",
+    Icon: Cloud,
+    items: [
+      { name: "Azure", primary: true },
+      { name: "AWS", primary: true },
+      { name: "Docker", primary: true },
+      { name: "Kubernetes", primary: true },
+      { name: "GitHub Actions", primary: true },
+      { name: "SonarQube", primary: true },
+      { name: "CI/CD", primary: true },
+    ],
+  },
+  {
+    name: "Data & Auth",
+    Icon: Database,
+    items: [
+      { name: "PostgreSQL", primary: true },
+      { name: "MySQL", primary: true },
+      { name: "MongoDB", primary: true },
+      { name: "Redis", primary: true },
+      { name: "Keycloak", primary: true },
+      { name: "Okta", primary: true },
+      { name: "OAuth 2.0", primary: true },
+      { name: "JWT", primary: true },
+    ],
   },
 ];
 
 export function Skills() {
+  const isMobile = useIsMobile();
+
   return (
-    <section className="py-24 border-t border-slate-200 dark:border-slate-800">
-      <div className="mb-12">
-        <h2 className="text-3xl font-bold tracking-tight">Technical Proficiency</h2>
-        <p className="text-slate-600 dark:text-slate-400 mt-2">Core technologies I use to build robust applications.</p>
+    <section id="skills" style={{ padding: isMobile ? "64px 0" : "96px 0" }}>
+      {/* Eyebrow */}
+      <div className="eyebrow">
+        <span className="eyebrow-num">02</span>
+        <span className="eyebrow-line" />
+        <span>stack · cat package.json</span>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-12">
-        {skillCategories.map((category, index) => (
-          <motion.div
-            key={category.title}
-            initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="flex flex-col gap-6"
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-900 flex items-center justify-center text-accent">
-                <category.icon className="w-6 h-6" />
-              </div>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{category.title}</h3>
-            </div>
+      {/* Title */}
+      <h2 className="section-title">
+        Tools I reach for{" "}
+        <span className="serif-italic">daily</span>.
+      </h2>
 
-            <div className="flex flex-wrap gap-3">
-              {category.skills.map(skill => (
-                <span 
-                  key={skill} 
-                  className="px-4 py-2 border border-slate-200 dark:border-slate-800 rounded-full font-medium text-slate-700 dark:text-slate-300 hover:border-accent hover:text-accent transition-colors bg-white dark:bg-slate-950 cursor-default"
+      <p className="section-sub">
+        Filled dots are what I lead with. Hollow dots are what I&apos;m comfortable in.
+      </p>
+
+      {/* 2x2 grid of category cards */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
+          gap: "16px",
+          marginTop: "48px",
+        }}
+      >
+        {categories.map((cat, idx) => {
+          const { Icon } = cat;
+          return (
+            <motion.div
+              key={cat.name}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.08, ease: "easeOut" }}
+              style={{
+                background: "var(--surface)",
+                border: "1px solid var(--border)",
+                borderRadius: "12px",
+                padding: "24px",
+                transition: "box-shadow 0.2s ease, border-color 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-md)";
+                (e.currentTarget as HTMLElement).style.borderColor = "var(--border-2)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+              }}
+            >
+              {/* Card header */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  marginBottom: "20px",
+                }}
+              >
+                <span
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "30px",
+                    height: "30px",
+                    borderRadius: "6px",
+                    background: "var(--accent-soft)",
+                    color: "var(--accent)",
+                    flexShrink: 0,
+                  }}
                 >
-                  {skill}
+                  <Icon size={15} />
                 </span>
-              ))}
-            </div>
-          </motion.div>
-        ))}
+                <span
+                  style={{
+                    fontFamily: "var(--mono)",
+                    fontSize: "11.5px",
+                    color: "var(--ink-3)",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.08em",
+                    fontWeight: 500,
+                  }}
+                >
+                  {cat.name}
+                </span>
+                <span
+                  style={{
+                    marginLeft: "auto",
+                    fontSize: "11px",
+                    color: "var(--ink-4)",
+                  }}
+                >
+                  {cat.items.length} tools
+                </span>
+              </div>
+
+              {/* Items */}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                {cat.items.map((item) => (
+                  <span
+                    key={item.name}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "5px",
+                      padding: "3px 9px 3px 7px",
+                      fontFamily: "var(--mono)",
+                      fontSize: "12px",
+                      color: item.primary ? "var(--ink-2)" : "var(--ink-4)",
+                      background: "var(--surface-2)",
+                      border: "1px solid var(--border)",
+                      borderRadius: "999px",
+                    }}
+                  >
+                    {item.primary ? (
+                      /* filled dot */
+                      <span
+                        style={{
+                          width: "5px",
+                          height: "5px",
+                          borderRadius: "50%",
+                          background: "var(--accent)",
+                          display: "inline-block",
+                          flexShrink: 0,
+                        }}
+                      />
+                    ) : (
+                      /* hollow dot */
+                      <span
+                        style={{
+                          width: "5px",
+                          height: "5px",
+                          borderRadius: "50%",
+                          border: "1px solid var(--ink-4)",
+                          display: "inline-block",
+                          flexShrink: 0,
+                        }}
+                      />
+                    )}
+                    {item.name}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
     </section>
   );

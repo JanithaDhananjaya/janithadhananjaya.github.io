@@ -1,35 +1,232 @@
 @import "tailwindcss";
 
+/* ── Theme tokens ── */
+:root[data-theme="light"] {
+  --bg: #FAF7F0;
+  --bg-2: #F2ECDD;
+  --surface: #FFFFFF;
+  --surface-2: rgba(28, 25, 23, 0.025);
+  --border: #E7DFCB;
+  --border-2: #D8CCB0;
+  --ink: #1C1917;
+  --ink-2: #44403C;
+  --ink-3: #78716C;
+  --ink-4: #A8A29E;
+  --grid: rgba(28, 25, 23, 0.045);
+  --code-bg: #F4EDDB;
+  --shadow-sm: 0 1px 0 rgba(28, 25, 23, 0.04), 0 1px 3px rgba(28, 25, 23, 0.03);
+  --shadow-md: 0 1px 0 rgba(28, 25, 23, 0.04), 0 8px 24px -4px rgba(28, 25, 23, 0.08);
+}
+
+:root[data-theme="dark"] {
+  --bg: #17120E;
+  --bg-2: #110D0A;
+  --surface: #1F1814;
+  --surface-2: rgba(255, 255, 255, 0.025);
+  --border: rgba(255, 244, 220, 0.07);
+  --border-2: rgba(255, 244, 220, 0.14);
+  --ink: #FAF6EB;
+  --ink-2: #D6CFB9;
+  --ink-3: #9A917A;
+  --ink-4: #6B6353;
+  --grid: rgba(255, 244, 220, 0.04);
+  --code-bg: #221A14;
+  --shadow-sm: 0 1px 0 rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 1px 0 rgba(0, 0, 0, 0.4), 0 12px 32px -8px rgba(0, 0, 0, 0.4);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a; /* slate-900 */
-  --accent: #3b82f6; /* blue-500 */
+  --page-padding: 48px;
+  --accent: #C2410C;
+  --accent-2: #9A330A;
+  --accent-soft: rgba(194, 65, 12, 0.10);
+  --accent-soft-2: rgba(194, 65, 12, 0.18);
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --serif: "Fraunces", ui-serif, Georgia, serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-accent: var(--accent);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root[data-theme="dark"] {
+  --accent: #F97316;
+  --accent-2: #FB923C;
+  --accent-soft: rgba(249, 115, 22, 0.14);
+  --accent-soft-2: rgba(249, 115, 22, 0.22);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #020617; /* slate-950 */
-    --foreground: #f8fafc; /* slate-50 */
-    --accent: #60a5fa; /* blue-400 */
-  }
-}
-
+/* ── Base ── */
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 14.5px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
+  font-feature-settings: "ss02", "ss03", "cv09";
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 0);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(ellipse 100% 70% at 50% 40%, black, transparent 80%);
+}
+
+::selection {
+  background: var(--accent-soft-2);
+  color: var(--ink);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-2);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* ── Reusable classes ── */
+.tag {
+  padding: 3px 9px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-bottom: 28px;
+}
+
+.eyebrow-num {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.eyebrow-line {
+  flex: 0 0 32px;
+  height: 1px;
+  background: var(--border-2);
+}
+
+.section-title {
+  font-family: var(--mono);
+  font-size: clamp(32px, 4.2vw, 52px);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+
+.section-title .serif-italic {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink-2);
+}
+
+.section-sub {
+  font-size: 15px;
+  color: var(--ink-3);
+  max-width: 620px;
+  line-height: 1.65;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: #16A34A;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.18);
+  animation: pulse 2.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* ── ScrollSpy rail ── */
+.scrollspy-rail { display: flex; }
+@media (max-width: 1320px) { .scrollspy-rail { display: none !important; } }
+
+/* Show label on hover */
+.scrollspy-rail a:hover .spy-label { opacity: 1 !important; }
+
+/* ── Typewriter code line reveal ── */
+@keyframes codeLineReveal {
+  from { opacity: 0; transform: translateY(-2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.code-line-anim {
+  opacity: 0;
+  animation: codeLineReveal 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--line-i, 0) * 70ms + 300ms);
+}
+
+/* Blinking code cursor after last line */
+@keyframes codeIn { to { opacity: 1; } }
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.code-cursor-anim {
+  display: inline-block;
+  width: 6px;
+  height: 13px;
+  background: var(--accent);
+  vertical-align: -2px;
+  margin-left: 2px;
+  opacity: 0;
+  animation: codeIn 0.2s 1.6s forwards, cursor-blink 1.1s 1.8s step-end infinite;
+}
+
+/* ── Custom cursor ── */
+@media (pointer: fine) {
+  *, *::before, *::after {
+    cursor: none !important;
+  }
+}
+
+/* ── Mobile responsive ── */
+@media (max-width: 768px) {
+  :root {
+    --page-padding: 20px;
+  }
 }
